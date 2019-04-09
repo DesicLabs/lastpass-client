@@ -1,0 +1,39 @@
+{
+  "name": "lastpass-vault",
+  "version": "1.0.0",
+  "description": "Browser javascript client for handling lastpass vaults.",
+  "main": "./lib/library.js",
+  "types": "./lib/library.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allroundexperts/lastpass-vault.git"
+  },
+  "keywords": [
+    "LastPass",
+    "Vault",
+    "Library",
+    "LastPass-Client",
+    "Client",
+    "Javascript",
+    "LastPass-Vault-Library"
+  ],
+  "author": "Sibtain Ali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allroundexperts/lastpass-vault/issues"
+  },
+  "homepage": "https://github.com/allroundexperts/lastpass-vault#readme",
+  "devDependencies": {
+    "typescript": "^3.4.1"
+  },
+  "dependencies": {
+    "xml-js": "^1.6.11"
+  }
+}
