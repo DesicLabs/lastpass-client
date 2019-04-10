@@ -8,7 +8,7 @@ export default class LastPass {
     username: string,
     password: string,
     otp?: number
-  ): Promise<void> => {
+  ): Promise<true> => {
     const iterations = await this._getIterations(username);
     this.key = await this._getKey(username, password, iterations);
     const form = new FormData();
@@ -35,6 +35,7 @@ export default class LastPass {
       throw new Error("Bad session response.");
     } else {
       this.session = json.ok._attributes.sessionid;
+      return true;
     }
   };
 
@@ -48,7 +49,7 @@ export default class LastPass {
     url: string,
     name: string,
     otp?: number
-  ) => {
+  ): Promise<true> => {
     const form = new FormData();
     form.append("username", await this._encrypt(username));
     form.append("password", await this._encrypt(password));
@@ -63,7 +64,7 @@ export default class LastPass {
       }
     });
     if (response.ok) {
-      return "User created successfully.";
+      return true;
     } else {
       throw new Error("Bad request.");
     }
