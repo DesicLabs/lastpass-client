@@ -1,9 +1,17 @@
 import { xml2js } from "xml-js";
 import { ITERATIONS, LOGIN, VAULT, CREATE } from "./endpoints";
 
+interface Account {
+  name: string;
+  url: string;
+  username: string;
+  password: string;
+}
+
 export default class LastPass {
   key: ArrayBuffer | undefined;
-  session: string | undefined;
+  hash: string | undefined;
+  session: { sessionid: string; token: string } | undefined;
   login = async (
     username: string,
     password: string,
@@ -11,17 +19,19 @@ export default class LastPass {
   ): Promise<true> => {
     const iterations = await this._getIterations(username);
     this.key = await this._getKey(username, password, iterations);
+    this.hash = await this._getHash(this.key, password);
     const form = new FormData();
     form.append("method", "mobile");
     form.append("web", "1");
     form.append("xml", "1");
     form.append("username", username);
-    form.append("hash", await this._getHash(this.key, password));
+    form.append("hash", this.hash);
     form.append("iterations", iterations.toString());
     form.append("imei", "web_browser");
     otp && form.append("otp", (otp as number).toString());
     const result = await fetch(LOGIN, {
       method: "POST",
+      referrerPolicy: "no-referrer",
       body: form
     });
     const xml = await result.text();
@@ -34,12 +44,12 @@ export default class LastPass {
     ) {
       throw new Error("Bad session response.");
     } else {
-      this.session = json.ok._attributes.sessionid;
+      this.session = json.ok._attributes;
       return true;
     }
   };
 
-  getAccounts = async () => {
+  getAccounts = async (): Promise<Array<Account>> => {
     return await this._decryptAccounts();
   };
 
@@ -55,15 +65,33 @@ export default class LastPass {
     form.append("password", await this._encrypt(password));
     form.append("url", this._bufferToHex(new TextEncoder().encode(url)));
     form.append("name", await this._encrypt(name));
+    form.append("token", (this.session as any).token);
+    form.append("extjs", "1");
+    form.append("method", "cli");
+    form.append("grouping", "");
+    form.append("extra", "");
+    form.append("aid", "0");
+    form.append("folder", "none");
     otp && form.append("otp", await this._encrypt(otp.toString()));
     const response = await fetch(CREATE, {
       method: "POST",
+      referrerPolicy: "no-referrer",
       body: form,
       headers: {
-        Cookie: `PHPSESSID=${encodeURIComponent(this.session as string)};`
+        Cookie: `PHPSESSID=${encodeURIComponent(
+          (this.session as any).sessionid
+        )};`
       }
     });
-    if (response.ok) {
+    const xml = await response.text();
+    const {
+      xmlresponse: {
+        result: {
+          _attributes: { msg }
+        }
+      }
+    }: any = xml2js(xml, { compact: true });
+    if (response.ok && msg === "accountadded") {
       return true;
     } else {
       throw new Error("Bad request.");
@@ -99,7 +127,9 @@ export default class LastPass {
       method: "POST",
       referrerPolicy: "no-referrer",
       headers: {
-        Cookie: `PHPSESSID=${encodeURIComponent(this.session as string)};`
+        Cookie: `PHPSESSID=${encodeURIComponent(
+          (this.session as any).sessionid
+        )};`
       }
     });
     if (!result.ok) {
@@ -114,25 +144,28 @@ export default class LastPass {
     }
   };
 
-  private _decryptAccounts = async () => {
+  private _decryptAccounts = async (): Promise<Array<Account>> => {
     const data = await this._fetchAccounts();
-    let accounts: Array<any> = [];
+    const accounts: Array<Promise<Account>> = [];
+    for (let i = 0; i < data.length; i++) {
+      const decryptedAccount = this._decryptAccount(data[i]);
+      accounts.push(decryptedAccount);
+    }
+    return await Promise.all(accounts);
+  };
 
-    data.map(async (account: any, index: number) => {
-      const {
-        _attributes: { name, url, username },
-        login: {
-          _attributes: { p }
-        }
-      } = account;
-      accounts.push({
-        name: await this._getField(name),
-        url: await this._getField(url),
-        username: await this._getField(username),
-        password: await this._getField(p)
-      });
-    });
-    return accounts;
+  private _decryptAccount = async (account: any): Promise<Account> => {
+    let {
+      _attributes: { name, url, username },
+      login: {
+        _attributes: { p }
+      }
+    } = account;
+    name = await this._getField(name);
+    url = await this._getField(url);
+    username = await this._getField(username);
+    p = await this._getField(p);
+    return { name, url, username, password: p };
   };
 
   private _getField = async (field: string) => {
