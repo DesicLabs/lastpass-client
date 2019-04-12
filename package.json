@@ -1,6 +1,6 @@
 {
   "name": "lastpass-vault",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Browser javascript client for handling lastpass vaults.",
   "main": "./lib/library.js",
   "types": "./lib/library.d.ts",

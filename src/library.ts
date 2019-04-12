@@ -140,7 +140,7 @@ export default class LastPass {
           accounts: { account }
         }
       } = xml2js(await result.text(), { compact: true }) as any;
-      return account;
+      return Array.isArray(account) ? account : [account];
     }
   };
 
