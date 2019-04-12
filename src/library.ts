@@ -171,17 +171,18 @@ export default class LastPass {
   private _getField = async (field: string) => {
     const length = field.length;
     if (length === 0) return "";
-
-    const [iv, payload] = field.split("|");
     let decrypted = "";
 
     if (field.slice(0, 1) === "!") {
-      decrypted = await this._decrypt(
-        this._base64ToBuffer(payload),
-        this._base64ToBuffer(iv.slice(1))
-      );
+      const [iv, payload] = field.split("|");
+      if (iv && payload) {
+        decrypted = await this._decrypt(
+          this._base64ToBuffer(payload),
+          this._base64ToBuffer(iv.slice(1))
+        );
+      }
     } else {
-      decrypted = new TextDecoder().decode(this._hexToBuffer(field));
+      if (field) decrypted = new TextDecoder().decode(this._hexToBuffer(field));
     }
 
     return decrypted;
@@ -267,11 +268,13 @@ export default class LastPass {
   };
 
   private _hexToBuffer = (hex: string): ArrayBuffer => {
-    return new Uint8Array(
-      (hex.match(/[\da-f]{2}/gi) as Array<any>).map(function(h) {
+    const matches = hex.match(/[\da-f]{2}/gi) as Array<any>;
+    let buff: any = [];
+    if (matches)
+      buff = matches.map(function(h) {
         return parseInt(h, 16);
-      })
-    );
+      });
+    return new Uint8Array(buff);
   };
 
   private _base64ToBuffer = (base64: string) => {
