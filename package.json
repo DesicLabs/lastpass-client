@@ -1,16 +1,17 @@
 {
   "name": "lastpass-vault",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Browser javascript client for handling lastpass vaults.",
-  "main": "./lib/library.js",
-  "types": "./lib/library.d.ts",
-  "files": [
-    "lib/**/*"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "start:dev": "webpack-dev-server --open",
+    "build": "webpack"
   },
+  "main": "dist/lastpass.js",
+  "types": "dist/lastpass.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/allroundexperts/lastpass-vault.git"
@@ -31,9 +32,14 @@
   },
   "homepage": "https://github.com/allroundexperts/lastpass-vault#readme",
   "devDependencies": {
-    "typescript": "^3.4.1"
+    "ts-loader": "^5.4.4",
+    "typescript": "^3.4.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
+    "@types/node": "^11.13.8",
     "xml-js": "^1.6.11"
   }
 }
