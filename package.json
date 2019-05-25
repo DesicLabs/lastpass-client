@@ -1,6 +1,6 @@
 {
   "name": "lastpass-vault",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Browser javascript client for handling lastpass vaults.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
