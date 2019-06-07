@@ -177,8 +177,3 @@ export default class LastPass {
   };
 }
 
-const lp = new LastPass();
-lp.login("allroundexperts@gmail.com", "Sibi1234@")
-  .then(lp.getAccounts)
-  .then(console.log)
-  .catch(console.log);
