@@ -1,6 +1,6 @@
 {
   "name": "lastpass-vault",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "description": "Cross Platform javascript client for handling lastpass vaults.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
