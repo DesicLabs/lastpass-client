@@ -1,11 +1,10 @@
-import { xml2js } from "xml-js";
 import {
   createDecipheriv,
   createCipheriv,
   randomBytes,
   pbkdf2Sync
 } from "crypto";
-import { ITERATIONS, LOGIN, VAULT, CREATE } from "./endpoints";
+import { request, ITERATIONS, LOGIN, VAULT, CREATE } from "./helpers";
 
 interface Account {
   name: string;
@@ -167,43 +166,19 @@ export default class LastPass {
     );
   };
 
-  private request = async (
+  private request = (
     endpoint: string,
     method: string,
     body: any,
     headers: any = {},
     type = "text"
   ) => {
-    let form: any;
-    if (body) {
-      form = new FormData();
-      form.append("method", "cli");
-      form.append("xml", "1");
-      form.append("imei", "cli");
-      this.session && form.append("token", this.session.token);
-      Object.keys(body).map(key => {
-        form.append(key, body[key]);
-      });
-    }
-    headers = {
-      ...(this.session && {
-        Cookie: `PHPSESSID=${encodeURIComponent(this.session.sessionid)};`
-      }),
-      ...headers
-    };
-    const response = await fetch(endpoint, {
-      method,
-      referrerPolicy: "no-referrer",
-      ...(body && { body: form }),
-      headers
-    });
-    if (!response.ok) {
-      throw new Error("Error requesting data.");
-    }
-    const xml = await response.text();
-    if (type === "js") {
-      return xml2js(xml, { compact: true });
-    }
-    return xml;
+    return request(endpoint, method, body, headers, type, this.session);
   };
 }
+
+const lp = new LastPass();
+lp.login("allroundexperts@gmail.com", "Sibi1234@")
+  .then(lp.getAccounts)
+  .then(console.log)
+  .catch(console.log);

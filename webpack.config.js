@@ -1,6 +1,6 @@
 const path = require("path");
-
-module.exports = {
+const webpack = require("webpack");
+const config = {
   entry: "./src/lastpass.ts",
   module: {
     rules: [
@@ -11,12 +11,8 @@ module.exports = {
       }
     ]
   },
-  target: "web",
-  mode: "production",
-  node: {
-    buffer: true,
-    crypto: true
-  },
+  mode: "development",
+  devtool: "inline-source-map",
   devServer: {
     contentBase: "./dist"
   },
@@ -24,9 +20,32 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"]
   },
   output: {
-    filename: "lastpass.js",
     path: path.resolve(__dirname, "dist"),
     libraryTarget: "umd",
     globalObject: "typeof self !== 'undefined' ? self : this"
   }
 };
+
+const webConfig = {
+  ...config,
+  target: "web",
+  node: {
+    buffer: true,
+    crypto: true
+  },
+  output: { ...config.output, filename: "lastpass.client.js" }
+};
+
+const serverConfig = {
+  ...config,
+  target: "node",
+  output: { ...config.output, filename: "lastpass.node.js" },
+  plugins: [
+    new webpack.ProvidePlugin({
+      FormData: "form-data",
+      fetch: ["node-fetch", "default"]
+    })
+  ]
+};
+
+module.exports = [serverConfig, webConfig];
