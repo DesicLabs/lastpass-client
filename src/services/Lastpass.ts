@@ -2,7 +2,7 @@ import { ITERATIONS, VAULT, LOGIN, CREATE } from "../config";
 import { Session, Entry } from "../types";
 import { request } from "../utilities";
 
-export default class Lastpass {
+export class Lastpass {
   private session: Session;
 
   public async getIterations(email: string): Promise<string> {

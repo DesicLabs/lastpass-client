@@ -6,7 +6,7 @@ import {
 } from "crypto";
 import { Entry, EntryFields } from "../types";
 
-export default class Cipher {
+export class Cipher {
   private username: string;
   private password: string;
   private key: Buffer;

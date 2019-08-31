@@ -1,5 +1,5 @@
-import Cipher from "./services/Cipher";
-import Lastpass from "./services/Lastpass";
+import { Cipher } from "./services/Cipher";
+import { Lastpass } from "./services/Lastpass";
 import { Client, Entry } from "./types";
 
 export default class LastpassClient implements Client {

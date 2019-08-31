@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const DtsBundleWebpack = require("dts-bundle-webpack");
+const nodeExternals = require("webpack-node-externals");
 
 const config = {
   entry: "./src/Client.ts",
@@ -16,7 +17,7 @@ const config = {
   plugins: [
     new DtsBundleWebpack({
       name: "lastpass",
-      main: "dist/**/*.d.ts",
+      main: "dist/Client.d.ts",
       removeSource: true,
       outputAsModuleFolder: true
     })
@@ -48,6 +49,7 @@ const webConfig = {
 
 const serverConfig = {
   ...config,
+  externals: [nodeExternals()],
   target: "node",
   output: { ...config.output, filename: "lastpass.node.js" },
   plugins: [
