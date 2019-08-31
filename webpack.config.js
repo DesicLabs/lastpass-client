@@ -1,7 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
+const DtsBundleWebpack = require("dts-bundle-webpack");
+
 const config = {
-  entry: "./src/lastpass.ts",
+  entry: "./src/Client.ts",
   module: {
     rules: [
       {
@@ -11,6 +13,14 @@ const config = {
       }
     ]
   },
+  plugins: [
+    new DtsBundleWebpack({
+      name: "lastpass",
+      main: "dist/**/*.d.ts",
+      removeSource: true,
+      outputAsModuleFolder: true
+    })
+  ],
   mode: "production",
   //devtool: "inline-source-map",
   devServer: {
@@ -33,7 +43,7 @@ const webConfig = {
     buffer: true,
     crypto: true
   },
-  output: { ...config.output, filename: "lastpass.client.js" }
+  output: { ...config.output, filename: "lastpass.browser.js" }
 };
 
 const serverConfig = {
