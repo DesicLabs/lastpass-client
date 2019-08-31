@@ -1,10 +1,6 @@
-# LastpassClient
+# Lastpass Client
 
 ## Class Hierarchy
-
-- **LastpassClient**
-
-## Index
 
 ### Methods
 
