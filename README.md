@@ -1,8 +1,6 @@
-**[Lastpass Client]**
+# LastpassClient
 
-# Class: LastpassClient
-
-## Hierarchy
+## Class Hierarchy
 
 - **LastpassClient**
 
