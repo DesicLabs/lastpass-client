@@ -12,8 +12,8 @@ export default class LastpassClient implements Client {
   }
 
   public async login(
-    username: string,
     password: string,
+    username?: string,
     otp?: string
   ): Promise<void> {
     const iterations = await this.lastpass.getIterations(username);
