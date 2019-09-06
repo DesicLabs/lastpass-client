@@ -31,8 +31,8 @@ export default class LastpassClient implements Client {
     return cipheredAccounts.map(account => this.cipher.decryptAccount(account));
   }
 
-  public async addAccount(entry: Entry): Promise<boolean> {
+  public async addAccount(entry: Entry): Promise<void> {
     const account = await this.cipher.encryptAccount(entry);
-    return await this.lastpass.createAccount(account);
+    await this.lastpass.createAccount(account);
   }
 }
