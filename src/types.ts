@@ -20,8 +20,8 @@ export type Session = {
 };
 
 export type HttpHeaders = Record<string, string>;
-export type HttpBody = FormData;
 export type HttpMethod = "POST" | "GET" | "PUT" | "DELETE";
+export type HttpBody = FormData;
 export type RequestResponseType = "js" | "xml";
 
 export interface HttpRequest {

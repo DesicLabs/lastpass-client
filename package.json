@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "webpack-dev-server --open",
     "start:node": "node ./dist/lastpass.node.js",
-    "build": "webpack && rm -r ./dist/services/"
+    "build": "webpack && rm -r ./dist/services/",
+    "prepare": "webpack && rm -r ./dist/services/"
   },
   "main": "dist/lastpass.node.js",
   "browser": "dist/lastpass.browser.js",
@@ -16,7 +17,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/allroundexperts/lastpass-client.git"
+    "url": "git+https://github.com/DesicLabs/lastpass-client.git"
   },
   "keywords": [
     "LastPass",
@@ -30,9 +31,9 @@
   "author": "Sibtain Ali",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/allroundexperts/lastpass-client/issues"
+    "url": "https://github.com/DesicLabs/lastpass-client/issues"
   },
-  "homepage": "https://github.com/allroundexperts/lastpass-client#readme",
+  "homepage": "https://github.com/DesicLabs/lastpass-client#readme",
   "devDependencies": {
     "dts-bundle-webpack": "^1.0.2",
     "ts-loader": "^5.4.4",
