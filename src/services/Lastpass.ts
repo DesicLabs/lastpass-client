@@ -1,5 +1,5 @@
 import { ITERATIONS, VAULT, LOGIN, CREATE } from "../config";
-import { Session, Entry } from "../types";
+import { Session, RawEntry } from "../types";
 import { request } from "../utilities";
 
 export class Lastpass {
@@ -29,7 +29,7 @@ export class Lastpass {
     else this.session = json.ok._attributes;
   }
 
-  public async fetchAccounts(): Promise<Entry[]> {
+  public async fetchAccounts(): Promise<RawEntry[]> {
     const {
       response: {
         accounts: { account }
@@ -43,7 +43,7 @@ export class Lastpass {
     return req.ok;
   }
 
-  private transformAccounts(accounts: any[]): Entry[] {
+  private transformAccounts(accounts: any[]): RawEntry[] {
     return accounts.map(account => {
       let {
         _attributes: { name, url, username, group },

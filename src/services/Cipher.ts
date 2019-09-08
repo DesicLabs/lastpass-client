@@ -4,7 +4,7 @@ import {
   randomBytes,
   pbkdf2Sync
 } from "crypto";
-import { Entry, EntryFields } from "../types";
+import { RawEntry, RawEntryFields } from "../types";
 
 export class Cipher {
   private username: string;
@@ -27,20 +27,20 @@ export class Cipher {
     ).toString("hex");
   }
 
-  public decryptAccount(account: Entry): Entry {
+  public decryptAccount<T extends Partial<RawEntry>>(account: T): T {
     const decipheredAccount: any = {};
-    Object.keys(account).map((key: EntryFields): void => {
+    Object.keys(account).map((key: Partial<RawEntryFields>): void => {
       decipheredAccount[key] = this.getField(account[key]);
     });
-    return decipheredAccount as Entry;
+    return decipheredAccount as T;
   }
 
-  public encryptAccount(account: Entry): Entry {
+  public encryptAccount(account: RawEntry): RawEntry {
     const cipheredAccount: any = {};
-    Object.keys(account).map((key: EntryFields): void => {
+    Object.keys(account).map((key: RawEntryFields): void => {
       cipheredAccount[key] = this.encrypt(account[key]);
     });
-    return cipheredAccount as Entry;
+    return cipheredAccount as RawEntry;
   }
 
   private setKey(iterations: string) {

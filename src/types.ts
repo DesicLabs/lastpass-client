@@ -1,12 +1,14 @@
-export type EntryFields =
-  | "name"
-  | "url"
-  | "type"
-  | "username"
-  | "password"
-  | "otp";
+export type EntryFields = "name" | "url" | "type";
 
 export type Entry = Record<EntryFields, string>;
+
+export type EntryCredentialsFields = "username" | "password" | "otp";
+
+export type EntryCredentials = Record<EntryCredentialsFields, string>;
+
+export type RawEntryFields = EntryFields & EntryCredentialsFields;
+
+export type RawEntry = Entry & EntryCredentials;
 
 export interface Client {
   login: (
@@ -15,6 +17,7 @@ export interface Client {
     secret?: string
   ) => Promise<void>;
   getAccounts: () => Promise<Entry[]>;
+  getAccountCredentials: (fqdn: string) => Promise<EntryCredentials>;
   addAccount: (account: Entry) => Promise<void>;
 }
 
