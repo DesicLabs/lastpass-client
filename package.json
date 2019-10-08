@@ -1,5 +1,5 @@
 {
-  "name": "@desiclabs/lastpass-client",
+  "name": "@privicy/lastpass-client",
   "version": "1.0.5",
   "description": "Cross Platform javascript client for handling lastpass vaults.",
   "scripts": {
@@ -17,7 +17,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DesicLabs/lastpass-client.git"
+    "url": "git+https://github.com/privicy/lastpass-client.git"
   },
   "keywords": [
     "LastPass",
@@ -31,9 +31,9 @@
   "author": "Sibtain Ali",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DesicLabs/lastpass-client/issues"
+    "url": "https://github.com/privicy/lastpass-client/issues"
   },
-  "homepage": "https://github.com/DesicLabs/lastpass-client#readme",
+  "homepage": "https://github.com/privicy/lastpass-client#readme",
   "devDependencies": {
     "dts-bundle-webpack": "^1.0.2",
     "@types/node": "^12.7.5",
