@@ -28,8 +28,8 @@ export default class LastpassClient implements Client {
 
   public async getAccounts(): Promise<Entry[]> {
     const cipheredAccounts = await this.lastpass.fetchAccounts();
-    return cipheredAccounts.map(({ url, name, type }) =>
-      this.cipher.decryptAccount<Entry>({ url, name, type })
+    return cipheredAccounts.map(({ url, username, name, type }) =>
+      this.cipher.decryptAccount<Entry>({ url, username, name, type })
     );
   }
 
