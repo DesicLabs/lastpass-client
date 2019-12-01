@@ -1,6 +1,6 @@
 import { Cipher } from "./services/Cipher";
 import { Lastpass } from "./services/Lastpass";
-import { Client, Entry, EntryCredentials, RawEntry } from "./types";
+import { Client, Entry, EntryCredentials, NewEntry, FullEntry } from "./types";
 
 export default class LastpassClient implements Client {
   private cipher: Cipher;
@@ -26,33 +26,26 @@ export default class LastpassClient implements Client {
     );
   }
 
-  public async getAccounts(): Promise<Entry[]> {
-    const cipheredAccounts = await this.lastpass.fetchAccounts();
-    return cipheredAccounts.map(({ url, username, name, type }) =>
-      this.cipher.decryptAccount<Entry>({ url, username, name, type })
+  public async getEntries(): Promise<Entry[]> {
+    const cipheredEntries = await this.lastpass.fetchAccounts();
+    return cipheredEntries.map(({ url, username, name, type, id }) =>
+      this.cipher.decryptAccount<Entry>({ url, username, name, type, id })
     );
   }
 
-  public async getAccountCredentials(fqdn: string): Promise<EntryCredentials> {
-    const cipheredAccounts = await this.lastpass.fetchAccounts();
-    const accounts = cipheredAccounts.map(({ url, username, password, otp }) =>
-      this.cipher.decryptAccount<EntryCredentials & { url: string }>({
-        url,
-        username,
-        password,
-        otp
-      })
-    );
-    const account = accounts.find(({ url }) => url.match(new RegExp(fqdn)));
-    if (!account) throw new Error("Account not found.");
+  public async getEntryCredentials(id: string): Promise<EntryCredentials> {
+    const cipheredEntries = await this.lastpass.fetchAccounts();
+    const foundEntry = cipheredEntries.find(entry => entry.id === id);
+    if (!foundEntry) throw new Error("Account not found.");
+    const entry = this.cipher.decryptAccount<FullEntry>(foundEntry);
     return {
-      username: account.username,
-      password: account.password,
-      otp: account.otp
+      username: entry.username,
+      password: entry.password,
+      otp: entry.otp
     };
   }
 
-  public async addAccount(entry: RawEntry): Promise<void> {
+  public async addEntry(entry: NewEntry): Promise<void> {
     const account = await this.cipher.encryptAccount(entry);
     await this.lastpass.createAccount(account);
   }
