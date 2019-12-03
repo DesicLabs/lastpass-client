@@ -13,7 +13,7 @@
 
 ### addEntry
 
-▸ **addEntry**(`entry`: [NewEntry]): _Promise‹boolean›_
+▸ **addEntry**(`entry`: [NewEntry]): _Promise‹string›_
 
 **Parameters:**
 
@@ -35,7 +35,7 @@
 
 ### getEntryCredentials
 
-▸ **getEntryCredentials**(): _Promise‹[EntryCredentials]_
+▸ **getEntryCredentials**(`id`: string): _Promise‹[EntryCredentials]_
 
 **Returns:** _Promise_
 
@@ -64,7 +64,7 @@
 
 ### FullEntryFields
 
-Ƭ **RawEntryFields**: \_"name" | "url" | "type" | "username" | "password" | "otp"
+Ƭ **RawEntryFields**: \_"name" | "url" | "type" | "id" | "username" | "password" | "otp"
 
 ---
 
@@ -76,7 +76,7 @@
 
 ### EntryFields
 
-Ƭ **EntryFields**: \_"name" | "username" | "url" | "type"
+Ƭ **EntryFields**: \_"name" | "username" | "url" | "type" | "id"
 
 ---
 
