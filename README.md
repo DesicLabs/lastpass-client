@@ -4,9 +4,9 @@
 
 ### Methods
 
-- [addEntry](README.md#addaccount)
-- [getEntries](README.md#getEntries)
-- [getEntryCredentials](README.md#getaccountcredentials)
+- [addEntry](README.md#addentry)
+- [getEntries](README.md#getentries)
+- [getEntryCredentials](README.md#getentrycredentials)
 - [login](README.md#login)
 
 ## Methods
