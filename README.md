@@ -4,38 +4,38 @@
 
 ### Methods
 
-- [addAccount](README.md#addaccount)
-- [getAccounts](README.md#getaccounts)
-- [getAccountCredentials](README.md#getaccountcredentials)
+- [addEntry](README.md#addentry)
+- [getEntries](README.md#getentries)
+- [getEntryCredentials](README.md#getentrycredentials)
 - [login](README.md#login)
 
 ## Methods
 
-### addAccount
+### addEntry
 
-▸ **addAccount**(`entry`: [RawEntry]): _Promise‹boolean›_
+▸ **addEntry**(`entry`: [NewEntry]): _Promise‹string›_
 
 **Parameters:**
 
 | Name    | Type       |
 | ------- | ---------- |
-| `entry` | [RawEntry] |
+| `entry` | [NewEntry] |
 
 **Returns:** _Promise‹boolean›_
 
 ---
 
-### getAccounts
+### getEntries
 
-▸ **getAccounts**(): _Promise‹[Entry]_
+▸ **getEntries**(): _Promise‹[Entry]_
 
 **Returns:** _Promise_
 
 ---
 
-### getAccountCredentials
+### getEntryCredentials
 
-▸ **getAccountCredentials**(): _Promise‹[EntryCredentials]_
+▸ **getEntryCredentials**(`id`: string): _Promise‹[EntryCredentials]_
 
 **Returns:** _Promise_
 
@@ -56,15 +56,15 @@
 
 ## Type aliases
 
-### RawEntry
+### FullEntry
 
-Ƭ **RawEntry**: _Record‹[RawEntryFields](README.md#rawentryfields), string›_
+Ƭ **RawEntry**: _Record‹[FullEntryFields](README.md#rawentryfields), string›_
 
 ---
 
-### RawEntryFields
+### FullEntryFields
 
-Ƭ **RawEntryFields**: \_"name" | "url" | "type" | "username" | "password" | "otp"
+Ƭ **RawEntryFields**: \_"name" | "url" | "type" | "id" | "username" | "password" | "otp"
 
 ---
 
@@ -76,7 +76,7 @@
 
 ### EntryFields
 
-Ƭ **EntryFields**: \_"name" | "username" | "url" | "type"
+Ƭ **EntryFields**: \_"name" | "username" | "url" | "type" | "id"
 
 ---
 

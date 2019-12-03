@@ -1,5 +1,5 @@
 import { ITERATIONS, VAULT, LOGIN, CREATE } from "../config";
-import { Session, RawEntry } from "../types";
+import { Session, FullEntry } from "../types";
 import { request } from "../utilities";
 
 export class Lastpass {
@@ -20,16 +20,24 @@ export class Lastpass {
     const body = { username: email, hash, iterations, ...(otp && { otp }) };
     const json: any = await request(LOGIN, "POST", "js", body);
     if (
+      json &&
+      json.response &&
+      json.response.error &&
+      json.response.error._attributes && 
+      json.response.error._attributes.message
+    )
+      throw new Error(json.response.error._attributes.message);
+    if (
       !json ||
       !json.ok ||
       !json.ok._attributes ||
       !json.ok._attributes.sessionid
     )
       throw new Error("Bad session response.");
-    else this.session = json.ok._attributes;
+      else this.session = json.ok._attributes;
   }
 
-  public async fetchAccounts(): Promise<RawEntry[]> {
+  public async fetchAccounts(): Promise<FullEntry[]> {
     const {
       response: {
         accounts: { account }
@@ -43,15 +51,15 @@ export class Lastpass {
     return req.ok;
   }
 
-  private transformAccounts(accounts: any[]): RawEntry[] {
+  private transformAccounts(accounts: any[]): FullEntry[] {
     return accounts.map(account => {
       let {
-        _attributes: { name, url, username, group },
+        _attributes: { name, url, username, group, id },
         login: {
           _attributes: { p }
         }
       } = account;
-      return { name, url, username, type: group, password: p, otp: "" };
+      return { name, url, username, type: group, password: p, otp: "", id };
     });
   }
 }
