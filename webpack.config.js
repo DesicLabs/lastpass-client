@@ -52,12 +52,6 @@ const serverConfig = {
   externals: [nodeExternals()],
   target: "node",
   output: { ...config.output, filename: "lastpass.node.js" },
-  plugins: [
-    new webpack.ProvidePlugin({
-      FormData: "form-data",
-      fetch: ["node-fetch", "default"]
-    })
-  ]
 };
 
 module.exports = [serverConfig, webConfig];

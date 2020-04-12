@@ -5,10 +5,12 @@ import { Client, Entry, EntryCredentials, NewEntry, FullEntry } from "./types";
 export default class LastpassClient implements Client {
   private cipher: Cipher;
   private lastpass: Lastpass;
+  private http: any;
 
-  public constructor() {
+  public constructor(http: any) {
+    this.http = http;
     this.cipher = new Cipher();
-    this.lastpass = new Lastpass();
+    this.lastpass = new Lastpass(http);
   }
 
   public async login(
@@ -47,6 +49,7 @@ export default class LastpassClient implements Client {
 
   public async addEntry(entry: NewEntry): Promise<void> {
     const account = await this.cipher.encryptAccount(entry);
-    await this.lastpass.createAccount(account);
+    const res = await this.lastpass.createEntry(account);
+    return res && res.id || '';
   }
 }

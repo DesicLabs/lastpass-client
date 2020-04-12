@@ -4,9 +4,14 @@ import { request } from "../utilities";
 
 export class Lastpass {
   private session: Session;
+  private http: any;
+
+  constructor(http: any) {
+    this.http = http;
+  }
 
   public async getIterations(email: string): Promise<string> {
-    return (await request(ITERATIONS, "POST", "text", {
+    return (await request(this.http, ITERATIONS, "text", {
       email
     })) as string;
   }
@@ -18,7 +23,7 @@ export class Lastpass {
     otp?: string
   ) {
     const body = { username: email, hash, iterations, ...(otp && { otp }) };
-    const json: any = await request(LOGIN, "POST", "js", body);
+    const json: any = await request(this.http, LOGIN, "json", body);
     if (
       json &&
       json.response &&
@@ -42,13 +47,12 @@ export class Lastpass {
       response: {
         accounts: { account }
       }
-    }: any = await request(VAULT, "POST", "js", undefined, this.session);
+    }: any = await request(this.http, VAULT, "json", undefined, this.session);
     return this.transformAccounts(Array.isArray(account) ? account : [account]);
   }
 
-  public async createAccount(body: Record<string, string>): Promise<boolean> {
-    const req: any = await request(CREATE, "POST", "js", body, this.session);
-    return req.ok;
+  public async createEntry(body: Record<string, string>): Promise<any> {
+    return await request(this.http, CREATE, "json", body, this.session);
   }
 
   private transformAccounts(accounts: any[]): FullEntry[] {

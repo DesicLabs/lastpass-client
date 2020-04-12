@@ -1,6 +1,6 @@
 {
   "name": "@privicy/lastpass-client",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "Cross Platform javascript client for handling lastpass vaults.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -43,10 +43,5 @@
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
     "webpack-node-externals": "^1.7.2"
-  },
-  "dependencies": {
-    "form-data": "^2.5.1",
-    "node-fetch": "^2.6.0",
-    "xml-js": "^1.6.11"
   }
 }
